@@ -3,21 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Crop Talk Forum</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="logo">Crop Talk</div>
-    <div class="container">
-        <h1>Login</h1>
-        <label for="username">Username</label>
-        <input type="text" id="username" placeholder="Enter Username">
+    <header class="header">
+        <div class="logo">Logo</div>
+        <div class="search-container">
+            <input type="text" class="search-bar" placeholder="Search">
+            <button class="search-btn">&#128269;</button>
+        </div>
+        <div class="account-section">
+            <button class="post-btn">Post</button>
+            <a href="login.html">
+                <button class="account-btn">Account</button>
+            </a>
+            
+        </div>
+    </header>
+    
+    <nav class="sidebar">
+        <button class="nav-btn">Home</button>
+        <button class="nav-btn">Crop Prices</button>
+        <button class="nav-btn">Tool Prices</button>
+        <button class="nav-btn">Farm AI</button>
+    </nav>
+
+    <main class="content">
+        <div class="filter-bar">
+            <span>Filter By:</span>
+            <button class="filter-btn">Trending</button>
+            <button class="filter-btn">Most Popular</button>
+            <button class="filter-btn">Most Recent</button>
+        </div>
         
-        <label for="password">Password</label>
-        <input type="password" id="password" placeholder="Enter Password">
-        
-        <button class="btn">Submit</button>
-        <a href="signup.html" class="link-btn">Sign Up</a>
-    </div>
+        <section class="posts">
+            <h3>Posts</h3>
+            <div class="post">
+            </div>
+        </section>
+    </main>
 </body>
 </html>
