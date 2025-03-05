@@ -137,7 +137,12 @@ body {
 
 .post p {
     margin: 5px 0 0;
+    background-color: white;
     font-size: 16px;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 5px;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
 }
 
 /* General Login & Signup Page Styling */
@@ -204,4 +209,76 @@ body {
     margin: 10px auto;
     text-align: center;
 }
+
+.create-post {
+    background-color: #8c5a2b;
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#create-post textarea {
+    width: 100%;
+    height: 80px;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 16px;
+}
+
+#submit-post {
+    background-color: #f7a800;
+    border: none;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+
+#post-content {
+    width: 100%;
+    height: 80px;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 16px;
+    background-color: white;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.reply-btn, .submit-reply-btn {
+    background-color: #f7a800;
+    border: none;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    display: block;
+    background-color: #8c5a2b;
+}
+
+.reply-btn:hover, .submit-reply-btn:hover {
+    background-color: #e69500; 
+}
+
+.replies {
+    padding-left: 5px;
+    border-left: 2px solid #ccc;
+}
+
+.reply {
+    background-color: #f7a800; /* White background */
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+
+
 
