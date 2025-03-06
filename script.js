@@ -79,36 +79,43 @@ document.addEventListener("DOMContentLoaded", () => {
         if (event.target.classList.contains("submit-reply-btn")) {
             const parentPost = event.target.closest(".post, .reply");
             const replyInput = parentPost.querySelector(".reply-input");
-            const repliesSection = parentPost.querySelector(".replies");
-
+            
+            let repliesSection = parentPost.querySelector(".replies");
+            if (!repliesSection) {
+                repliesSection = document.createElement("div");
+                repliesSection.classList.add("replies");
+                parentPost.appendChild(repliesSection);
+            }
+        
             const replyText = replyInput.value.trim();
             if (replyText !== "") {
                 const replyDiv = document.createElement("div");
                 replyDiv.classList.add("reply");
                 replyDiv.dataset.postId = generateUniqueId();
-
+        
                 const replyContent = document.createElement("p");
                 replyContent.textContent = replyText; // Prevents XSS
-
+        
                 const upvoteButton = createVoteButton("👍", "upvote-btn");
                 const downvoteButton = createVoteButton("👎", "downvote-btn");
                 const replyButton = document.createElement("button");
                 replyButton.textContent = "Reply";
                 replyButton.classList.add("reply-btn");
-
+        
                 replyDiv.appendChild(replyContent);
                 replyDiv.appendChild(upvoteButton);
                 replyDiv.appendChild(downvoteButton);
                 replyDiv.appendChild(replyButton);
                 repliesSection.appendChild(replyDiv);
-
+        
                 // Remove reply input and submit button after submitting
-                replyInput.remove();
-                event.target.remove();
+                if (replyInput) replyInput.remove();
+                if (event.target) event.target.remove();
             } else {
                 alert("Reply cannot be empty!");
             }
         }
+        
 
         if (event.target.classList.contains("upvote-btn") || event.target.classList.contains("downvote-btn")) {
             const parentPost = event.target.closest(".post, .reply");
