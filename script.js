@@ -161,3 +161,18 @@ document.addEventListener("DOMContentLoaded", () => {
         return "post-" + Math.random().toString(36).substr(2, 9);
     }
 });
+
+//Reyes code
+document.addEventListener("DOMContentLoaded", function() {
+    const submitButton = document.getElementById("submitButton");
+    const userName = document.getElementById("username");
+    const userPass = document.getElementById("password");
+
+    submitButton.addEventListener("click", async function() {
+        window.userInputFromCollector = userName;
+        window.userInputFromCollector = userPass;
+        alert("hi")
+    });
+});
+
+
