@@ -164,14 +164,48 @@ document.addEventListener("DOMContentLoaded", () => {
 
 //Reyes code
 document.addEventListener("DOMContentLoaded", function() {
-    const submitButton = document.getElementById("submitButton");
-    const userName = document.getElementById("username");
-    const userPass = document.getElementById("password");
+    const form = document.getElementById("signupForm");
+    const username = document.getElementById("username");
+    const email = document.getElementById("email");
+    const name = document.getElementById("name");
+    const password = document.getElementById("password");
+    const confirmPassword = document.getElementById("confirm-password");
 
-    submitButton.addEventListener("click", async function() {
-        window.userInputFromCollector = userName;
-        window.userInputFromCollector = userPass;
-        alert("hi")
+    form.addEventListener("submit", async function(e) {
+        e.preventDefault();
+        
+        if (password.value !== confirmPassword.value) {
+            alert("Passwords do not match!");
+            return;
+        }
+
+        const userData = {
+            username: username.value,
+            email: email.value,
+            name: name.value,
+            password: password.value
+        };
+
+        try {
+            const response = await fetch('http://localhost:3000/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(userData)
+            });
+
+            if (response.ok) {
+                alert("Signup successful!");
+                window.location.href = "index.html";
+            } else {
+                const errorText = await response.text();
+                alert(`Signup failed: ${errorText}`);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert("An error occurred during signup.");
+        }
     });
 });
 

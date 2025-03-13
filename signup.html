@@ -6,32 +6,29 @@
     <title>Sign Up</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-    <body class="signup-page">
+<body class="signup-page">
     <div class="logo">Crop Talk</div>
-    <div class="container">
+    <form id="signupForm" class="container">
         <h1>Sign Up</h1>
+        
         <label for="username">Username</label>
-        <input type="text" id="username" placeholder="Enter Username">
+        <input type="text" id="username" name="username" placeholder="Enter Username" required>
 
         <label for="email">Email</label>
-        <input type="email" id="email" placeholder="Enter Email">
+        <input type="email" id="email" name="email" placeholder="Enter Email" required>
 
         <label for="name">Name</label>
-        <input type="text" id="name" placeholder="Enter Name">
+        <input type="text" id="name" name="name" placeholder="Enter Name" required>
 
         <label for="password">Password</label>
-        <input type="password" id="password" placeholder="Enter Password">
+        <input type="password" id="password" name="password" placeholder="Enter Password" required>
 
         <label for="confirm-password">Re-Enter Password</label>
-        <input type="password" id="confirm-password" placeholder="Re-Enter Password">
+        <input type="password" id="confirm-password" name="confirm-password" placeholder="Re-Enter Password" required>
 
-
-        <script src="script.js"></script>
-        <script src="Mongo.js"></script>
-        <a href="login.html" id="submitButton" class="link-btn">Submit</a>
+        <button type="submit" class="link-btn">Submit</button>
         <a href="index.html" class="link-btn">Log In</a>
-        
-    </div>
+    </form>
+    <script src="script.js"></script>
 </body>
 </html>

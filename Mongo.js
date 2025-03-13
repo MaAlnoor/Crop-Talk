@@ -3,16 +3,7 @@ const { MongoClient } = require("mongodb");
 const uri = "mongodb+srv://Me123:Croptalk@croptalk.2iljc.mongodb.net/?retryWrites=true&w=majority&appName=CropTalk";
 const dbName = "Accounts";
 const collectionName = "Username";
-let collection; // We'll store the collection here
-
-if (window.userInputFromCollector) {
-    let receivedData = window.userInputFromCollector;
-    console.log("Receiver: I received: " + receivedData);
-    // You can now use the receivedData in this file.
-    alert("The receiver got the information: " + receivedData);
-} else {
-    alert("Receiver: No data received yet.");
-}
+let collection;
 
 async function main() {
     const client = new MongoClient(uri);
@@ -22,7 +13,7 @@ async function main() {
         console.log("Connected to MongoDB!");
 
         const db = client.db(dbName);
-        collection = db.collection(collectionName); // Store the collection
+        collection = db.collection(collectionName);
 
     } catch (err) {
         console.error("Error:", err);
@@ -31,7 +22,7 @@ async function main() {
 
 async function checkLogin(username, password) {
     if (!collection) {
-        alert("Database collection is not ready.");
+        console.error("Database collection is not ready.");
         return;
     }
 
@@ -39,22 +30,43 @@ async function checkLogin(username, password) {
         const user = await collection.findOne({ username: username, password: password });
 
         if (user) {
-            alert("Login successful!");
+            console.log("Login successful!");
+            return true;
         } else {
-            alert("Login failed. Username or password incorrect.");
+            console.log("Login failed. Username or password incorrect.");
+            return false;
         }
     } catch (err) {
         console.error("Error during login check:", err);
-        alert("An error occurred during login.");
+        return false;
     }
 }
 
-function print(){
-    alert("hi")
+async function insertUser(username, email, name, password) {
+    if (!collection) {
+        console.error("Database collection is not ready.");
+        return;
+    }
+
+    try {
+        await collection.insertOne({ username, email, name, password });
+        console.log("User inserted successfully!");
+    } catch (err) {
+        console.error("Error inserting user:", err);
+    }
 }
 
-main(); // Start the database connection
-//checkLogin(document.getElementById("username"),document.getElementById("password"))
+function print() {
+    console.log("hi");
+}
+
+module.exports = {
+    main,
+    checkLogin,
+    insertUser
+};
+
+main();
 
 
 
