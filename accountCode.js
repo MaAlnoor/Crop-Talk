@@ -10,8 +10,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
+//run mongo.js main function
 mongo.main();
 
+//Add user to database with given data
 app.post('/signup', async (req, res) => {
     const { username, email, name, password } = req.body;
 
@@ -24,7 +26,7 @@ app.post('/signup', async (req, res) => {
     }
 });
 
-// Add this console.log message
+//ensure that server is running
 app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);
 });

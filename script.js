@@ -164,6 +164,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 //Reyes code
 document.addEventListener("DOMContentLoaded", function() {
+    //Grab inputs from signup.html
     const form = document.getElementById("signupForm");
     const username = document.getElementById("username");
     const email = document.getElementById("email");
@@ -171,14 +172,17 @@ document.addEventListener("DOMContentLoaded", function() {
     const password = document.getElementById("password");
     const confirmPassword = document.getElementById("confirm-password");
 
+    //When submit burtton is pressed
     form.addEventListener("submit", async function(e) {
         e.preventDefault();
         
+        //Validation
         if (password.value !== confirmPassword.value) {
             alert("Passwords do not match!");
             return;
         }
 
+        //Store as an array to be used in JSON
         const userData = {
             username: username.value,
             email: email.value,
@@ -186,6 +190,7 @@ document.addEventListener("DOMContentLoaded", function() {
             password: password.value
         };
 
+        //Attempt to communicate information to server
         try {
             const response = await fetch('http://localhost:3000/signup', {
                 method: 'POST',
@@ -195,6 +200,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 body: JSON.stringify(userData)
             });
 
+            //Error checks to idenify what and where problems occur
             if (response.ok) {
                 alert("Signup successful!");
                 window.location.href = "index.html";
