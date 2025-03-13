@@ -187,7 +187,8 @@ document.addEventListener("DOMContentLoaded", function() {
             username: username.value,
             email: email.value,
             name: name.value,
-            password: password.value
+            password: password.value,
+            admin: false
         };
 
         //Attempt to communicate information to server
