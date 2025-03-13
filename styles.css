@@ -2,32 +2,33 @@
 body {
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif;
-    background-color: #4CAF50;
+    font-family: 'Arial', sans-serif;
+    background-color: #F2F0EF;
     display: flex;
-    color:black;
+    color: #333;
     flex-direction: column;
 }
 
 /* Header */
-
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #8c5a2b;
+    background-color: #2c2c2c;
     padding: 15px;
-    color: white;
+    color: #F2F0EF;
     position: relative;
+    border-bottom: 3px solid #333;
 }
 
 .logo {
-    background-color: #f7a800;
+    background-color: #dcdcdc;
     padding: 10px 20px;
     font-size: 24px;
     font-weight: bold;
     border-radius: 5px;
-    color: black;
+    color: #2c2c2c;
+    border: 2px solid #FFFFFF;
 }
 
 /* Search Bar */
@@ -45,14 +46,18 @@ body {
     border: none;
     font-size: 16px;
     align-items: center;
+    background-color: #dcdcdc;
+    color: #333;
+    border: 2px solid #FFFFFF;
 }
 
 .search-btn {
-    background-color: #f7a800;
+    background-color: #2c2c2c;
     border: none;
     padding: 8px 12px;
     margin-left: 10px;
     cursor: pointer;
+    color: #2c2c2c;
 }
 
 /* Account & Post Buttons */
@@ -62,8 +67,9 @@ body {
 }
 
 .post-btn, .account-btn {
-    background-color: #3b3b3b;
-    color: white;
+    background-color: #dcdcdc;
+    border: 2px solid #FFFFFF;
+    color: #2c2c2c;
     padding: 8px 15px;
     border-radius: 5px;
     border: none;
@@ -72,7 +78,7 @@ body {
 
 /* Sidebar */
 .sidebar {
-    background-color: #8c5a2b;
+    background-color: #2c2c2c;
     width: 180px;
     height: 100vh;
     position: absolute;
@@ -84,14 +90,16 @@ body {
 }
 
 .nav-btn {
-    background-color: #f7a800;
-    color: black;
+    background-color: #dcdcdc;
+    color: #2c2c2c;
     border: none;
     padding: 10px;
     width: 180px;
     margin: 5px 0;
     border-radius: 5px;
     cursor: pointer;
+    border: 2px solid #FFFFFF;
+    font-weight: bold;
 }
 
 /* Main Content */
@@ -102,33 +110,36 @@ body {
 
 /* Filter Bar */
 .filter-bar {
-    background-color: #8c5a2b;
+    background-color: #2c2c2c;
     padding: 10px;
     border-radius: 5px;
-    color: white;
+    color: #F2F0EF;
 }
 
 .filter-btn {
     background-color: transparent;
     border: none;
-    color: white;
+    color: #F2F0EF;
     margin: 0 10px;
     cursor: pointer;
 }
 
 /* Posts Section */
 .posts {
-    background-color: #8c5a2b;
+    background-color: #dcdcdc;
     padding: 15px;
     border-radius: 10px;
     margin-top: 10px;
+    color: #333;
+    border: 2px solid #FFFFFF;
 }
 
 .post {
-    background-color: #f7a800;
+    background-color: #dcdcdc;
     padding: 15px;
     border-radius: 5px;
     margin-bottom: 10px;
+    color: #dcdcdc;
 }
 
 .post h3 {
@@ -139,12 +150,15 @@ body {
 .post p {
     margin: 5px 0 0;
     background-color: white;
-    font-size: 32px;
+    font-size: 16px;
     padding: 10px;
     border-radius: 5px;
     margin-top: 5px;
     box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
+    color: #333;
 }
+
+
 
 /* General Login & Signup Page Styling */
 .login-page, .signup-page {
@@ -212,13 +226,14 @@ body {
 }
 
 .create-post {
-    background-color: #8c5a2b;
+    background-color: #dcdcdc;
     padding: 15px;
     border-radius: 10px;
     margin-top: 10px;
     display: flex;
     flex-direction: column;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    border: 2px solid #FFFFFF;
 }
 
 #create-post textarea {
@@ -230,7 +245,7 @@ body {
 }
 
 #submit-post {
-    background-color: #f7a800;
+    background-color: #dcdcdc;
     border: none;
     padding: 10px;
     margin-top: 10px;
@@ -238,6 +253,7 @@ body {
     cursor: pointer;
     font-size: 16px;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    border: 2px solid #FFFFFF;
 }
 
 
@@ -248,22 +264,23 @@ body {
     font-size: 16px;
     background-color: white;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif;
 }
 
 .reply-btn, .submit-reply-btn {
-    background-color: #f7a800;
-    border: none;
+    background-color: #dcdcdc;
     padding: 10px;
     margin-top: 5px;
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
     display: block;
-    background-color: #8c5a2b;
+    border: 2px solid #FFFFFF;
 }
 
 .reply-btn:hover, .submit-reply-btn:hover {
-    background-color: #e69500; 
+    background-color: #dcdcdc;
+    background-color: darkgray;
 }
 
 .replies {
@@ -272,7 +289,7 @@ body {
 }
 
 .reply {
-    background-color: #f7a800;
+    background-color: #dcdcdc;
     margin-top: 5px;
     border: 1px solid #ccc;
     border-radius: 5px;
