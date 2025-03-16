@@ -68,6 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             const postData = {
+                type: "post",
                 username: 'Guest',
                 question: content,
                 upvotes: 0,
@@ -286,6 +287,7 @@ document.addEventListener("DOMContentLoaded", function() {
             
             // Store as an array to be used in JSON
             const userData = {
+                type: "user",
                 username: username.value,
                 email: email.value,
                 name: name.value,
