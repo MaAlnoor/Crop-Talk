@@ -95,7 +95,8 @@ module.exports = {
     main,
     checkLogin,
     insertUser,
-    insertPost
+    insertPost,
+    getPosts
 };
 
 main();
