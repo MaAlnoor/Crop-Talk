@@ -22,7 +22,7 @@ async function main() {
 
 async function checkLogin(username, password) {
     if (!collection) {
-        console.error("Database collection is not ready.");
+        console.error("Database collection is not ready.log");
         return;
     }
 
@@ -44,7 +44,7 @@ async function checkLogin(username, password) {
 
 async function insertUser(username, email, name, password) {
     if (!collection) {
-        console.error("Database collection is not ready.");
+        console.error("Database collection is not ready.sign");
         return;
     }
 

@@ -164,56 +164,113 @@ document.addEventListener("DOMContentLoaded", () => {
 
 //Reyes code
 document.addEventListener("DOMContentLoaded", function() {
-    //Grab inputs from signup.html
-    const form = document.getElementById("signupForm");
+    // Grab inputs from signup.html
+    const signupForm = document.getElementById("signupForm");
     const username = document.getElementById("username");
     const email = document.getElementById("email");
     const name = document.getElementById("name");
     const password = document.getElementById("password");
     const confirmPassword = document.getElementById("confirm-password");
-
-    //When submit burtton is pressed
-    form.addEventListener("submit", async function(e) {
-        e.preventDefault();
+    
+    // Grab login elements
+    const loginButton = document.getElementById("loginButton");
+    
+    // Handle login button click
+    if (loginButton) {
+        console.log("Login button found, attaching event listener");
         
-        //Validation
-        if (password.value !== confirmPassword.value) {
-            alert("Passwords do not match!");
-            return;
-        }
-
-        //Store as an array to be used in JSON
-        const userData = {
-            username: username.value,
-            email: email.value,
-            name: name.value,
-            password: password.value,
-            admin: false
-        };
-
-        //Attempt to communicate information to server
-        try {
-            const response = await fetch('http://localhost:3000/signup', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(userData)
-            });
-
-            //Error checks to idenify what and where problems occur
-            if (response.ok) {
-                alert("Signup successful!");
-                window.location.href = "index.html";
-            } else {
-                const errorText = await response.text();
-                alert(`Signup failed: ${errorText}`);
+        loginButton.addEventListener("click", async function() {
+            console.log("Login button clicked");
+            
+            const loguser = document.getElementById("username2");
+            const logpass = document.getElementById("password2");
+            
+            if (!loguser.value || !logpass.value) {
+                alert("Please enter both username and password");
+                return;
             }
-        } catch (error) {
-            console.error('Error:', error);
-            alert("An error occurred during signup.");
-        }
-    });
+            
+            console.log("Login attempt for user:", loguser.value);
+            
+            const userData = {
+                username: loguser.value,
+                password: logpass.value,
+            };
+            
+            try {
+                console.log("Sending login request to server...");
+                const response = await fetch('http://localhost:3000/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(userData)
+                });
+                
+                console.log("Server response status:", response.status);
+                
+                if (response.ok) {
+                    const result = await response.text();
+                    console.log("Login success response:", result);
+                    alert("Login successful!");
+                    window.location.href = "index.html";
+                } else {
+                    const errorText = await response.text();
+                    console.log("Login error response:", errorText);
+                    alert(`Login failed: ${errorText}`);
+                }
+            } catch (error) {
+                console.error('Error during login request:', error);
+                alert("An error occurred during login.");
+            }
+        });
+    } else {
+        console.log("Login button not found on this page");
+    }
+    
+    // Handle signup form submission
+    if (signupForm) {
+        signupForm.addEventListener("submit", async function(e) {
+            e.preventDefault(); // This prevents the default form submission
+            
+            // Validation
+            if (password.value !== confirmPassword.value) {
+                alert("Passwords do not match!");
+                return;
+            }
+            
+            // Store as an array to be used in JSON
+            const userData = {
+                username: username.value,
+                email: email.value,
+                name: name.value,
+                password: password.value,
+                admin: false
+            };
+            
+            // Attempt to communicate information to server
+            try {
+                const response = await fetch('http://localhost:3000/signup', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(userData)
+                });
+                
+                // Error checks to identify what and where problems occur
+                if (response.ok) {
+                    alert("Signup successful!");
+                    window.location.href = "index.html";
+                } else {
+                    const errorText = await response.text();
+                    alert(`Signup failed: ${errorText}`);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert("An error occurred during signup.");
+            }
+        });
+    }
 });
-
 

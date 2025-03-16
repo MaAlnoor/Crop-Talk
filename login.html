@@ -6,19 +6,21 @@
     <title>Login</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-    <body class="login-page">
+<body class="login-page">
     <div class="logo">Crop Talk</div>
     <div class="container">
         <h1>Login</h1>
-        <label for="username">Username</label>
-        <input type="text" id="username" placeholder="Enter Username">
-        
-        <label for="password">Password</label>
-        <input type="password" id="password" placeholder="Enter Password">
-        
-        <a href="index.html" class="link-btn">Log In</a>
-        <a href="signup.html" class="link-btn">Sign Up</a>
+        <form id="loginForm" onsubmit="return false;">
+            <label for="username2">Username</label>
+            <input type="text" id="username2" placeholder="Enter Username" required>
+            
+            <label for="password2">Password</label>
+            <input type="password" id="password2" placeholder="Enter Password" required>
+            
+            <button id="loginButton" type="button" class="link-btn">Login</button>
+            <a href="signup.html" class="link-btn">Sign Up</a>
+        </form>
     </div>
+    <script src="script.js"></script>
 </body>
 </html>

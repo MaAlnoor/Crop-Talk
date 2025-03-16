@@ -10,10 +10,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
-//run mongo.js main function
+// Run mongo.js main function
 mongo.main();
 
-//Add user to database with given data
+// Add user to database with given data
 app.post('/signup', async (req, res) => {
     const { username, email, name, password } = req.body;
 
@@ -26,7 +26,24 @@ app.post('/signup', async (req, res) => {
     }
 });
 
-//ensure that server is running
+app.post('/login', async (req, res) => {
+    const { username, password } = req.body;
+
+    try {
+        const loginSuccess = await mongo.checkLogin(username, password);
+        
+        if (loginSuccess) {
+            res.status(200).send('Login successful!');
+        } else {
+            res.status(401).send('Invalid username or password');
+        }
+    } catch (err) {
+        console.error('Error during login:', err);
+        res.status(500).send(err.message);
+    }
+});
+
+// Ensure that server is running
 app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);
 });
