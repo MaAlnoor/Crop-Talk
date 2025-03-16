@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // Store user votes
     const userVotes = new Map();
-
+    /** 
     if (postButton) {
         postButton.addEventListener("click", () => {
             const content = postContent.value.trim();
@@ -49,6 +49,51 @@ document.addEventListener("DOMContentLoaded", () => {
             newPost.appendChild(replyButton);
             newPost.appendChild(repliesDiv);
             postsSection.appendChild(newPost);
+
+            // Clear input field
+            postContent.value = "";
+        });
+    }
+    */
+
+    if (postButton) {
+        postButton.addEventListener("click", async function(e) {
+            e.preventDefault(); // Prevents unintended form submission if inside a form
+            const content = postContent.value.trim();
+            const username = "Guest"; // || localStorage.getItem("username") ; // Fetch username dynamically
+
+            if (content === "") {
+                alert("Post cannot be empty!");
+                return;
+            }
+
+            const postData = {
+                username: 'Guest',
+                question: content,
+                upvotes: 0,
+                downvotes: 0,
+                reports: 0,
+                date: new Date().toLocaleDateString("en-GB")
+            };
+
+            try {
+                const response = await fetch("http://localhost:3000/postpage", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(postData)
+                });
+
+                if (response.ok) {
+                    alert("Post submitted successfully!");
+                    postContent.value = ""; // Clear input field
+                } else {
+                    const errorText = await response.text();
+                    alert(`Failed to submit post: ${errorText}`);
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                alert("An error occurred while submitting the post.");
+            }
 
             // Clear input field
             postContent.value = "";
@@ -273,4 +318,3 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 });
-
