@@ -56,6 +56,61 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     */
 
+        
+    async function fetchAndDisplayPosts() {
+        try {
+            const response = await fetch('http://localhost:3000/posts');
+            if (response.ok) {
+                const posts = await response.json();
+                displayPosts(posts); // Display the fetched posts
+            } else {
+                console.error('Failed to fetch posts:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error fetching posts:', error);
+        }
+    }
+
+    // Function to display posts
+    function displayPosts(posts) {
+        postsSection.innerHTML = ""; // Clear existing posts
+
+        posts.forEach(post => {
+            const newPost = document.createElement("div");
+            newPost.classList.add("post");
+            newPost.dataset.postId = post._id || generateUniqueId(); // Use database ID or generate one
+
+            // Create paragraph element for text content
+            const postText = document.createElement("p");
+            postText.textContent = post.question; // Use the 'question' field from the database
+
+            // Create Upvote, Downvote, and Reply buttons
+            const upvoteButton = createVoteButton("👍", "upvote-btn");
+            const downvoteButton = createVoteButton("👎", "downvote-btn");
+            const replyButton = document.createElement("button");
+            replyButton.textContent = "Reply";
+            replyButton.classList.add("reply-btn");
+
+            // Create replies container
+            const repliesDiv = document.createElement("div");
+            repliesDiv.classList.add("replies");
+
+            // Append elements
+            newPost.appendChild(postText);
+            newPost.appendChild(upvoteButton);
+            newPost.appendChild(downvoteButton);
+            newPost.appendChild(replyButton);
+            newPost.appendChild(repliesDiv);
+
+            // Append the new post to the posts section
+            postsSection.appendChild(newPost);
+        });
+    }
+
+    // Fetch and display posts when the page loads
+    fetchAndDisplayPosts();
+
+
     if (postButton) {
         postButton.addEventListener("click", async function(e) {
             e.preventDefault(); // Prevents unintended form submission if inside a form
