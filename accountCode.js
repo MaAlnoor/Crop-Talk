@@ -15,10 +15,10 @@ mongo.main();
 
 // Add user to database with given data
 app.post('/signup', async (req, res) => {
-    const { username, email, name, password, admin } = req.body;
+    const { type, username, email, name, password, admin } = req.body;
 
     try {
-        await mongo.insertUser(username, email, name, password, admin);
+        await mongo.insertUser(type, username, email, name, password, admin);
         res.status(200).send('Signup successful!');
     } catch (err) {
         console.error('Error during signup:', err);
@@ -28,10 +28,10 @@ app.post('/signup', async (req, res) => {
 
 // Add post to database with given data
 app.post('/postpage', async (req, res) => {
-    const { username, question, upvotes, downvotes, reports, date} = req.body;
+    const { type, username, question, upvotes, downvotes, reports, date} = req.body;
 
     try {
-        await mongo.insertPost(username, question, upvotes, downvotes, reports, date);
+        await mongo.insertPost(type, username, question, upvotes, downvotes, reports, date);
         res.status(200).send('Successfully Posted!');
     } catch (err) {
         console.error('Posting Error:', err);
