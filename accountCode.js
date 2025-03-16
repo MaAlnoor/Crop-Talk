@@ -26,6 +26,17 @@ app.post('/signup', async (req, res) => {
     }
 });
 
+app.get('/posts', async (req, res) => {
+    try {
+        const posts = await mongo.getPosts(); // Fetch posts from the database
+        res.status(200).json(posts); // Send posts as JSON response
+    } catch (err) {
+        console.error('Error fetching posts:', err);
+        res.status(500).send('Failed to fetch posts');
+    }
+});
+
+
 // Add post to database with given data
 app.post('/postpage', async (req, res) => {
     const { type, username, question, upvotes, downvotes, reports, date} = req.body;
