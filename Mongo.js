@@ -70,6 +70,23 @@ async function insertPost(type, username, question, upvotes, downvotes, reports,
     } 
 };
 
+async function getPosts() {
+    if (!collection) {
+        console.error("Database collection is not ready.");
+        return;
+    }
+
+    try {
+        // Fetch all documents where type is 'post'
+        const posts = await collection.find({ type: 'post' }).toArray();
+        return posts;
+    } catch (err) {
+        console.error("Error fetching posts:", err);
+        throw err;
+    }
+}
+
+
 function print() {
     console.log("hi");
 }
