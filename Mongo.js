@@ -42,28 +42,28 @@ async function checkLogin(username, password) {
     }
 }
 
-async function insertUser(username, email, name, password, admin) {
+async function insertUser(type, username, email, name, password, admin) {
     if (!collection) {
         console.error("Database collection is not ready.sign");
         return;
     }
 
     try {
-        await collection.insertOne({ username, email, name, password, admin });
+        await collection.insertOne({ type, username, email, name, password, admin });
         console.log("User inserted successfully!");
     } catch (err) {
         console.error("Error inserting user:", err);
     }
 }
 
-async function insertPost(username, question, upvotes, downvotes, reports, date) {
+async function insertPost(type, username, question, upvotes, downvotes, reports, date) {
     if (!collection) {
         console.error("Database collection is not ready.sign");
         return;
     }
 
     try {
-        await collection.insertOne({ username, question, upvotes, downvotes, reports, date });
+        await collection.insertOne({ type, username, question, upvotes, downvotes, reports, date });
         console.log("Post inserted successfully!");
     } catch (err) {
         console.error("Error inserting post:", err);
