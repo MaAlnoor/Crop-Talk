@@ -42,14 +42,14 @@ async function checkLogin(username, password) {
     }
 }
 
-async function insertUser(username, email, name, password) {
+async function insertUser(username, email, name, password, admin) {
     if (!collection) {
         console.error("Database collection is not ready.sign");
         return;
     }
 
     try {
-        await collection.insertOne({ username, email, name, password });
+        await collection.insertOne({ username, email, name, password, admin });
         console.log("User inserted successfully!");
     } catch (err) {
         console.error("Error inserting user:", err);
