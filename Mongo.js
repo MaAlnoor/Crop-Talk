@@ -56,6 +56,20 @@ async function insertUser(username, email, name, password) {
     }
 }
 
+async function insertPost(username, question, upvotes, downvotes, reports, date) {
+    if (!collection) {
+        console.error("Database collection is not ready.sign");
+        return;
+    }
+
+    try {
+        await collection.insertOne({ username, question, upvotes, downvotes, reports, date });
+        console.log("Post inserted successfully!");
+    } catch (err) {
+        console.error("Error inserting post:", err);
+    } 
+};
+
 function print() {
     console.log("hi");
 }
@@ -63,7 +77,8 @@ function print() {
 module.exports = {
     main,
     checkLogin,
-    insertUser
+    insertUser,
+    insertPost
 };
 
 main();
