@@ -59,69 +59,71 @@ document.addEventListener("DOMContentLoaded", () => {
         
     async function fetchAndDisplayPosts() {
         try {
-            const response = await fetch('http://localhost:3000/posts');
-            if (response.ok) {
-                const posts = await response.json();
-                displayPosts(posts); // Display the fetched posts
-            } else {
-                console.error('Failed to fetch posts:', response.statusText);
+            // Fetch posts
+            const postsResponse = await fetch('http://localhost:3000/posts');
+            if (!postsResponse.ok) {
+                alert('Failed to fetch posts:');
+                return;
             }
+            const posts = await postsResponse.json();
+    
+            // Fetch replies
+            const repliesResponse = await fetch('http://localhost:3000/replies');
+            if (!repliesResponse.ok) {
+                alert('Failed to fetch replies:');
+                return;
+            }
+            const replies = await repliesResponse.json();
+    
+            // Display posts and replies
+            displayPosts(posts, replies);
         } catch (error) {
-            console.error('Error fetching posts:', error);
+            alert('Error fetching posts or replies:', error);
         }
     }
 
     // Function to display posts
-    function displayPosts(posts) {
+    function displayPosts(posts, replies) {
         postsSection.innerHTML = ""; // Clear existing posts
-
+    
         posts.forEach(post => {
             const newPost = document.createElement("div");
             newPost.classList.add("post");
             newPost.dataset.postId = post._id || generateUniqueId(); // Use database ID or generate one
-
+    
             // Create paragraph element for text content
             const postText = document.createElement("p");
             postText.textContent = post.question; // Use the 'question' field from the database
-
+    
             // Create elements for username and date
-            
-            const postUsername = document.createElement("p");
-            const postDate = document.createElement("p");
             const postUserAndDate = document.createElement("p");
-
-            postUsername.textContent = `${post.username}`;
-            postUsername.classList.add("post-username");            
-            postDate.textContent = `${post.date}`;
-            postDate.classList.add("post-date");
-
             postUserAndDate.textContent = `Posted by '${post.username}' on ${post.date}`;
             postUserAndDate.classList.add("post-user-and-date");
-
+    
             // Create elements for votes and reports
             const postUpvotes = document.createElement("p");
             postUpvotes.textContent = `Upvotes: ${post.upvotes}`;
             postUpvotes.classList.add("post-upvotes");
-
+    
             const postDownvotes = document.createElement("p");
             postDownvotes.textContent = `Downvotes: ${post.downvotes}`;
             postDownvotes.classList.add("post-downvotes");
-
+    
             const postReports = document.createElement("p");
             postReports.textContent = `Reports: ${post.reports}`;
             postReports.classList.add("post-reports");
-
+    
             // Create Upvote, Downvote, and Reply buttons
             const upvoteButton = createVoteButton("👍", "upvote-btn", post.upvotes);
             const downvoteButton = createVoteButton("👎", "downvote-btn", post.downvotes);
             const replyButton = document.createElement("button");
             replyButton.textContent = "Reply";
             replyButton.classList.add("reply-btn");
-
+    
             // Create replies container
             const repliesDiv = document.createElement("div");
             repliesDiv.classList.add("replies");
-
+    
             // Append elements
             newPost.appendChild(postUserAndDate);
             newPost.appendChild(postText);
@@ -129,9 +131,28 @@ document.addEventListener("DOMContentLoaded", () => {
             newPost.appendChild(downvoteButton);
             newPost.appendChild(replyButton);
             newPost.appendChild(repliesDiv);
-
+    
             // Append the new post to the posts section
             postsSection.appendChild(newPost);
+    
+            // Display replies under their corresponding question
+            const postReplies = replies.filter(reply => reply.question === post.question);
+            postReplies.forEach(reply => {
+                const replyDiv = document.createElement("div");
+                replyDiv.classList.add("reply");
+    
+                const replyContent = document.createElement("p");
+                replyContent.textContent = reply.answer;
+    
+                const replyUserAndDate = document.createElement("p");
+                replyUserAndDate.textContent = `Replied by '${reply.username}' on ${reply.date}`;
+                replyUserAndDate.classList.add("reply-user-and-date");
+    
+                replyDiv.appendChild(replyContent);
+                replyDiv.appendChild(replyUserAndDate);
+    
+                repliesDiv.appendChild(replyDiv);
+            });
         });
     }
 
@@ -185,7 +206,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Event delegation for handling replies and votes
-    postsSection.addEventListener("click", (event) => {
+    postsSection.addEventListener("click", async (event) => {
         if (event.target.classList.contains("reply-btn")) {
             const parentPost = event.target.closest(".post, .reply");
             let replyInput = parentPost.querySelector(".reply-input");
@@ -204,6 +225,54 @@ document.addEventListener("DOMContentLoaded", () => {
                 parentPost.appendChild(submitReplyBtn);
             }
         }
+
+        if (event.target.classList.contains("submit-reply-btn")) {
+            const parentPost = event.target.closest(".post, .reply");
+            const replyInput = parentPost.querySelector(".reply-input");
+            let currentUser = localStorage.getItem("currentUser") || "Guest";
+    
+            if (replyInput && replyInput.value.trim() !== "") {
+                // Get the question from the post being replied to
+                const paragraphs = parentPost.querySelectorAll("p"); // Get all <p> tags
+                const question = paragraphs[1] ? paragraphs[1].textContent : "Unknown Question";
+    
+                const replyData = {
+                    type: "reply",
+                    username: currentUser,
+                    question: question, // Add the question field
+                    answer: replyInput.value.trim(),
+                    upvotes: 0,
+                    downvotes: 0,
+                    reports: 0,
+                    date: new Date().toLocaleDateString("en-GB")
+                };
+    
+                try {
+                    const response = await fetch("http://localhost:3000/reply", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(replyData)
+                    });
+    
+                    if (response.ok) {
+                        alert("Reply submitted successfully!");
+                        replyInput.value = ""; // Clear input field
+                        fetchAndDisplayPosts(); // Refresh posts to show the new reply
+                    } else {
+                        const errorText = await response.text();
+                        alert(`Failed to submit reply: ${errorText}`);
+                    }
+                } catch (error) {
+                    console.error("Error:", error);
+                    alert("An error occurred while submitting the reply.");
+                }
+            } else {
+                alert("Reply cannot be empty!");
+            }
+        }
+
+        /** 
+        
 
         if (event.target.classList.contains("submit-reply-btn")) {
             const parentPost = event.target.closest(".post, .reply");
@@ -244,6 +313,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 alert("Reply cannot be empty!");
             }
         }
+        */
         
 
         if (event.target.classList.contains("upvote-btn") || event.target.classList.contains("downvote-btn")) {
@@ -344,7 +414,6 @@ document.addEventListener("DOMContentLoaded", function() {
                     alert("Login successful!");
                     currentUser = loguser.value;
                     localStorage.setItem("currentUser", currentUser);
-                    alert(`Current user set to: ${currentUser}`); // Debugging line
                     window.location.href = "index.html";
                 } else {
                     const errorText = await response.text();
@@ -396,7 +465,6 @@ document.addEventListener("DOMContentLoaded", function() {
                     alert("Signup successful!");
                     currentUser = username.value;
                     localStorage.setItem("currentUser", currentUser);
-                    alert(`Current user set to: ${currentUser}`); // Debugging
                     window.location.href = "index.html";
                 } else {
                     const errorText = await response.text();
