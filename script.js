@@ -84,9 +84,36 @@ document.addEventListener("DOMContentLoaded", () => {
             const postText = document.createElement("p");
             postText.textContent = post.question; // Use the 'question' field from the database
 
+            // Create elements for username and date
+            
+            const postUsername = document.createElement("p");
+            const postDate = document.createElement("p");
+            const postUserAndDate = document.createElement("p");
+
+            postUsername.textContent = `${post.username}`;
+            postUsername.classList.add("post-username");            
+            postDate.textContent = `${post.date}`;
+            postDate.classList.add("post-date");
+
+            postUserAndDate.textContent = `Posted by '${post.username}' on ${post.date}`;
+            postUserAndDate.classList.add("post-user-and-date");
+
+            // Create elements for votes and reports
+            const postUpvotes = document.createElement("p");
+            postUpvotes.textContent = `Upvotes: ${post.upvotes}`;
+            postUpvotes.classList.add("post-upvotes");
+
+            const postDownvotes = document.createElement("p");
+            postDownvotes.textContent = `Downvotes: ${post.downvotes}`;
+            postDownvotes.classList.add("post-downvotes");
+
+            const postReports = document.createElement("p");
+            postReports.textContent = `Reports: ${post.reports}`;
+            postReports.classList.add("post-reports");
+
             // Create Upvote, Downvote, and Reply buttons
-            const upvoteButton = createVoteButton("👍", "upvote-btn");
-            const downvoteButton = createVoteButton("👎", "downvote-btn");
+            const upvoteButton = createVoteButton("👍", "upvote-btn", post.upvotes);
+            const downvoteButton = createVoteButton("👎", "downvote-btn", post.downvotes);
             const replyButton = document.createElement("button");
             replyButton.textContent = "Reply";
             replyButton.classList.add("reply-btn");
@@ -96,6 +123,7 @@ document.addEventListener("DOMContentLoaded", () => {
             repliesDiv.classList.add("replies");
 
             // Append elements
+            newPost.appendChild(postUserAndDate);
             newPost.appendChild(postText);
             newPost.appendChild(upvoteButton);
             newPost.appendChild(downvoteButton);
@@ -115,7 +143,7 @@ document.addEventListener("DOMContentLoaded", () => {
         postButton.addEventListener("click", async function(e) {
             e.preventDefault(); // Prevents unintended form submission if inside a form
             const content = postContent.value.trim();
-            const username = "Guest"; // || localStorage.getItem("username") ; // Fetch username dynamically
+            let currentUser = localStorage.getItem("currentUser") || "Guest";
 
             if (content === "") {
                 alert("Post cannot be empty!");
@@ -124,7 +152,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const postData = {
                 type: "post",
-                username: 'Guest',
+                username: currentUser,
                 question: content,
                 upvotes: 0,
                 downvotes: 0,
@@ -243,11 +271,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    function createVoteButton(symbol, className) {
+    function createVoteButton(symbol, className, initialVotes = 0) {
         const button = document.createElement("button");
-        button.textContent = `${symbol} 0`;
+        button.textContent = `${symbol} ${initialVotes}`; // Display initial vote count
         button.classList.add(className);
-        button.dataset.votes = 0;
+        button.dataset.votes = initialVotes; // Store the vote count in a data attribute
         return button;
     }
 
@@ -314,6 +342,9 @@ document.addEventListener("DOMContentLoaded", function() {
                     const result = await response.text();
                     console.log("Login success response:", result);
                     alert("Login successful!");
+                    currentUser = loguser.value;
+                    localStorage.setItem("currentUser", currentUser);
+                    alert(`Current user set to: ${currentUser}`); // Debugging line
                     window.location.href = "index.html";
                 } else {
                     const errorText = await response.text();
@@ -363,6 +394,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 // Error checks to identify what and where problems occur
                 if (response.ok) {
                     alert("Signup successful!");
+                    currentUser = username.value;
+                    localStorage.setItem("currentUser", currentUser);
+                    alert(`Current user set to: ${currentUser}`); // Debugging
                     window.location.href = "index.html";
                 } else {
                     const errorText = await response.text();
