@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
             // Fetch posts
             const postsResponse = await fetch('http://localhost:3000/posts');
             if (!postsResponse.ok) {
-                alert('Failed to fetch posts:');
+                console.error('Failed to fetch posts:', postsResponse.statusText);
                 return;
             }
             const posts = await postsResponse.json();
@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
             // Fetch replies
             const repliesResponse = await fetch('http://localhost:3000/replies');
             if (!repliesResponse.ok) {
-                alert('Failed to fetch replies:');
+                console.error('Failed to fetch replies:', repliesResponse.statusText);
                 return;
             }
             const replies = await repliesResponse.json();
@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
             // Display posts and replies
             displayPosts(posts, replies);
         } catch (error) {
-            alert('Error fetching posts or replies:', error);
+            console.error('Error fetching posts or replies:', error);
         }
     }
 
