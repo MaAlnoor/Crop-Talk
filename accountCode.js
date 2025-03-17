@@ -3,6 +3,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const app = express();
 const port = 3000;
+const { ObjectId } = require('mongodb');
 const mongo = require('./Mongo.js');
 
 app.use(cors());
@@ -47,6 +48,29 @@ app.post('/postpage', async (req, res) => {
     } catch (err) {
         console.error('Posting Error:', err);
         res.status(500).send(err.message);
+    }
+});
+
+// Add reply to database with given data
+app.post('/reply', async (req, res) => {
+    const { type, username, question, answer, upvotes, downvotes, reports, date } = req.body;
+
+    try {
+        await mongo.insertReply(type, username, question, answer, upvotes, downvotes, reports, date);
+        res.status(200).send('Reply submitted successfully!');
+    } catch (err) {
+        console.error('Error submitting reply:', err);
+        res.status(500).send(err.message);
+    }
+});
+
+app.get('/replies', async (req, res) => {
+    try {
+        const replies = await mongo.getReplies(); // Fetch replies from the database
+        res.status(200).json(replies); // Send replies as JSON response
+    } catch (err) {
+        console.error('Error fetching replies:', err);
+        res.status(500).send('Failed to fetch replies');
     }
 });
 
