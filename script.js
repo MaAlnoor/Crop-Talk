@@ -125,8 +125,8 @@ document.addEventListener("DOMContentLoaded", () => {
             repliesDiv.classList.add("replies");
     
             // Append elements
-            newPost.appendChild(postUserAndDate);
             newPost.appendChild(postText);
+            newPost.appendChild(postUserAndDate);
             newPost.appendChild(upvoteButton);
             newPost.appendChild(downvoteButton);
             newPost.appendChild(replyButton);
@@ -141,16 +141,26 @@ document.addEventListener("DOMContentLoaded", () => {
                 const replyDiv = document.createElement("div");
                 replyDiv.classList.add("reply");
     
+                // Reply content
                 const replyContent = document.createElement("p");
                 replyContent.textContent = reply.answer;
     
+                // Reply metadata (username and date)
                 const replyUserAndDate = document.createElement("p");
                 replyUserAndDate.textContent = `Replied by '${reply.username}' on ${reply.date}`;
                 replyUserAndDate.classList.add("reply-user-and-date");
     
+                // Reply upvote and downvote buttons
+                const replyUpvoteButton = createVoteButton("👍", "upvote-btn", reply.upvotes);
+                const replyDownvoteButton = createVoteButton("👎", "downvote-btn", reply.downvotes);
+    
+                // Append elements to the reply
                 replyDiv.appendChild(replyContent);
                 replyDiv.appendChild(replyUserAndDate);
+                replyDiv.appendChild(replyUpvoteButton);
+                replyDiv.appendChild(replyDownvoteButton);
     
+                // Append the reply to the replies container
                 repliesDiv.appendChild(replyDiv);
             });
         });
@@ -233,8 +243,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
             if (replyInput && replyInput.value.trim() !== "") {
                 // Get the question from the post being replied to
-                const paragraphs = parentPost.querySelectorAll("p"); // Get all <p> tags
-                const question = paragraphs[1] ? paragraphs[1].textContent : "Unknown Question";
+                const question = parentPost.querySelector("p").textContent;
     
                 const replyData = {
                     type: "reply",
