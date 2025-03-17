@@ -70,6 +70,20 @@ async function insertPost(type, username, question, upvotes, downvotes, reports,
     } 
 };
 
+async function insertReply(type, username, question, answer, upvotes, downvotes, reports, date) {
+    if (!collection) {
+        console.error("Database collection is not ready.");
+        return;
+    }
+
+    try {
+        await collection.insertOne({ type, username, question, answer, upvotes, downvotes, reports, date });
+        console.log("Reply inserted successfully!");
+    } catch (err) {
+        console.error("Error inserting reply:", err);
+    }
+}
+
 async function getPosts() {
     if (!collection) {
         console.error("Database collection is not ready.");
@@ -86,17 +100,32 @@ async function getPosts() {
     }
 }
 
+async function getReplies() {
+    if (!collection) {
+        console.error("Database collection is not ready.");
+        return;
+    }
 
-function print() {
-    console.log("hi");
+    try {
+        // Fetch all documents where type is 'reply'
+        const replies = await collection.find({ type: 'reply' }).toArray();
+        return replies;
+    } catch (err) {
+        console.error("Error fetching replies:", err);
+        throw err;
+    }
 }
+
 
 module.exports = {
     main,
     checkLogin,
     insertUser,
     insertPost,
-    getPosts
+    insertReply,
+    getPosts,
+    getReplies,
+    collection
 };
 
 main();
