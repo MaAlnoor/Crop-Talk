@@ -13,48 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // Store user votes
     const userVotes = new Map();
-    /** 
-    if (postButton) {
-        postButton.addEventListener("click", () => {
-            const content = postContent.value.trim();
-            if (content === "") {
-                alert("Post cannot be empty!");
-                return;
-            }
 
-            // Create a new post element
-            const newPost = document.createElement("div");
-            newPost.classList.add("post");
-            newPost.dataset.postId = generateUniqueId();
-
-            // Create paragraph element for text content
-            const postText = document.createElement("p");
-            postText.textContent = content; // Prevents XSS
-
-            // Create Upvote, Downvote, and Reply buttons
-            const upvoteButton = createVoteButton("👍", "upvote-btn");
-            const downvoteButton = createVoteButton("👎", "downvote-btn");
-            const replyButton = document.createElement("button");
-            replyButton.textContent = "Reply";
-            replyButton.classList.add("reply-btn");
-
-            // Create replies container
-            const repliesDiv = document.createElement("div");
-            repliesDiv.classList.add("replies");
-
-            // Append elements
-            newPost.appendChild(postText);
-            newPost.appendChild(upvoteButton);
-            newPost.appendChild(downvoteButton);
-            newPost.appendChild(replyButton);
-            newPost.appendChild(repliesDiv);
-            postsSection.appendChild(newPost);
-
-            // Clear input field
-            postContent.value = "";
-        });
-    }
-    */
 
         
     async function fetchAndDisplayPosts() {
@@ -280,49 +239,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-        /** 
-        
 
-        if (event.target.classList.contains("submit-reply-btn")) {
-            const parentPost = event.target.closest(".post, .reply");
-            const replyInput = parentPost.querySelector(".reply-input");
-            
-            let repliesSection = parentPost.querySelector(".replies");
-            if (!repliesSection) {
-                repliesSection = document.createElement("div");
-                repliesSection.classList.add("replies");
-                parentPost.appendChild(repliesSection);
-            }
-        
-            const replyText = replyInput.value.trim();
-            if (replyText !== "") {
-                const replyDiv = document.createElement("div");
-                replyDiv.classList.add("reply");
-                replyDiv.dataset.postId = generateUniqueId();
-        
-                const replyContent = document.createElement("p");
-                replyContent.textContent = replyText; // Prevents XSS
-        
-                const upvoteButton = createVoteButton("👍", "upvote-btn");
-                const downvoteButton = createVoteButton("👎", "downvote-btn");
-                const replyButton = document.createElement("button");
-                replyButton.textContent = "Reply";
-                replyButton.classList.add("reply-btn");
-        
-                replyDiv.appendChild(replyContent);
-                replyDiv.appendChild(upvoteButton);
-                replyDiv.appendChild(downvoteButton);
-                replyDiv.appendChild(replyButton);
-                repliesSection.appendChild(replyDiv);
-        
-                // Remove reply input and submit button after submitting
-                if (replyInput) replyInput.remove();
-                if (event.target) event.target.remove();
-            } else {
-                alert("Reply cannot be empty!");
-            }
-        }
-        */
         
 
         if (event.target.classList.contains("upvote-btn") || event.target.classList.contains("downvote-btn")) {
