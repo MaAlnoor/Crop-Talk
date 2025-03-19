@@ -5,6 +5,7 @@ const app = express();
 const port = 3000;
 const { ObjectId } = require('mongodb');
 const mongo = require('./Mongo.js');
+const bcrypt = require('bcrypt');
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -18,8 +19,11 @@ mongo.main();
 app.post('/signup', async (req, res) => {
     const { type, username, email, name, password, admin } = req.body;
 
+    const salt = bcrypt.genSaltSync(5);
+    const hash = bcrypt.hashSync(password, salt);
+
     try {
-        await mongo.insertUser(type, username, email, name, password, admin);
+        await mongo.insertUser(type, username, email, name, hash, admin);
         res.status(200).send('Signup successful!');
     } catch (err) {
         console.error('Error during signup:', err);
@@ -95,3 +99,4 @@ app.post('/login', async (req, res) => {
 app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);
 });
+

@@ -1,4 +1,5 @@
 const { MongoClient } = require("mongodb");
+const bcrypt = require('bcrypt');
 
 const uri = "mongodb+srv://Me123:Croptalk@croptalk.2iljc.mongodb.net/?retryWrites=true&w=majority&appName=CropTalk";
 const dbName = "Accounts";
@@ -22,25 +23,43 @@ async function main() {
 
 async function checkLogin(username, password) {
     if (!collection) {
-        console.error("Database collection is not ready.log");
-        return;
+        console.error("Database collection is not ready.");
+        return false;
     }
 
     try {
-        const user = await collection.findOne({ username: username, password: password });
-
-        if (user) {
-            console.log("Login successful!");
-            return true;
-        } else {
-            console.log("Login failed. Username or password incorrect.");
-            return false;
+        // First check if the input matches a username
+        const userByUsername = await collection.findOne({ username: username });
+        
+        if (userByUsername) {
+            // Compare the plaintext password with the stored hash
+            const passwordMatch = await bcrypt.compare(password, userByUsername.password);
+            if (passwordMatch) {
+                console.log("Login successful (username)!");
+                return true;
+            }
         }
+        
+        // If no match by username, check if it matches an email
+        const userByEmail = await collection.findOne({ email: username });
+        
+        if (userByEmail) {
+            // Compare the plaintext password with the stored hash
+            const passwordMatch = await bcrypt.compare(password, userByEmail.password);
+            if (passwordMatch) {
+                console.log("Login successful (email)!");
+                return true;
+            }
+        }
+        
+        console.log("Login failed. Username/email or password incorrect.");
+        return false;
     } catch (err) {
         console.error("Error during login check:", err);
         return false;
     }
 }
+
 
 async function insertUser(type, username, email, name, password, admin) {
     if (!collection) {
@@ -115,6 +134,7 @@ async function getReplies() {
         throw err;
     }
 }
+
 
 
 module.exports = {
