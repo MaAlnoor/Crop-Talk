@@ -163,7 +163,7 @@ body {
 
 /* General Login & Signup Page Styling */
 .login-page, .signup-page {
-    background-color: #4CAF50;
+    background-color: #b0b0b0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -172,59 +172,63 @@ body {
     padding-top: 80px;
 }
 
+
 /* Container Box for Forms */
 .container {
-    background-color: #8c5a2b;
+    background-color: #dcdcdc;
     padding: 30px;
     border-radius: 10px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
     text-align: center;
-    width: 300px;
+    width: 320px;
+    border: 2px solid #FFFFFF;
 }
+
 
 /* Title Styling */
 .container h1 {
     color: black;
     font-size: 24px;
+
 }
 
 /* Input Fields */
+
 .container input {
     width: 100%;
     padding: 10px;
     margin: 10px 0;
     border-radius: 5px;
-    border: none;
-    background-color: #f7a800;
+    border: 2px solid #dcdcdc;
+    background-color: #FFFFFF;
     color: black;
     font-size: 16px;
 }
 
-/* Buttons */
-.container .btn {
+
+.container .btn, .link-btn {
     width: 100%;
-    padding: 10px;
-    background-color: #3b3b3b;
-    color: white;
-    border: none;
+    max-width: 200px;
+    padding: 12px;
+    background-color: #dcdcdc;
+    color: black;
     border-radius: 5px;
     cursor: pointer;
-    margin-top: 10px;
+    font-size: 16px;
+    border: 2px solid #FFFFFF;
+    text-align: center;
+    transition: background-color 0.3s ease-in-out;
+    text-decoration: none;
+    display: block;
+    box-sizing: border-box;
+    margin: 10px auto;
 }
 
-/* Signup & Login Links */
-.link-btn {
-    display: block;
-    margin-top: 10px;
-    text-decoration: none;
-    color: black;
-    width: 50%;
-    font-size: 14px;
-    background-color: #f7a800;
-    border-radius: 5px;
-    margin: 10px auto;
-    text-align: center;
+.container .btn:hover, .link-btn:hover {
+    background-color: #b0b0b0;
 }
+
+
 
 .create-post {
     background-color: #dcdcdc;
