@@ -6,14 +6,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const farmAIResponseDiv = document.getElementById("farm-ai-response");
 
     if(farmAIButton){
-        farmAIButton.addEventListener("ciick", async () => { 
+        farmAIButton.addEventListener("click", async () => { 
             const question = farmAIInput.value.trim();
             if (!question){
                 farmAIResponseDiv.textContent = "Please enter a question.";
                 return;
             }
             try{
-                const response = await fetch("http://localhost:3000/farmAI",{
+                const response = await fetch("http://localhost:3001/farmAI",{
                     method: "POST",
                     headers: {"Content-Type": "application/json"},
                     body:JSON.stringify({ question }),
@@ -27,7 +27,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
-    
     const submitBtn = document.querySelector(".btn");
 
     if (submitBtn) {
