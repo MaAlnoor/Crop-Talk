@@ -78,6 +78,28 @@ app.get('/replies', async (req, res) => {
     }
 });
 
+//-David code Offline Farming AI route
+const FarmingTips = {
+    "watering crops": "Water the crops early in the morning or afternoon to converse the water.",
+    "soil health": "Use the compost as this will improve soil health naturally.",
+    "pest control": "Use oils such as neem oil or introduce beneficial insects like Ladybugs to reduce pests.",
+    "crop rotation": "Rotate your crops each season to prevent soil depletion and reduce pests."
+};
+
+app.post('/farmAI', (req, res) => {
+    const { question } = req.body;
+
+    if (!question || typeof question !== "string"){
+        return res.status(400).json({ error: "Please enter a valid quesion."});
+    }
+    const answer = FarmingTips[question.toLowerCase()] || "Sorry, I currently do not have advice for that topic.";
+    res.json ({ answer });
+})
+//David code - Making sure server is running
+app.listen(port, () => {
+    console.log('Server is listening http://localhost:${port}');
+})
+
 app.post('/login', async (req, res) => {
     const { username, password } = req.body;
 
