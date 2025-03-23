@@ -1,4 +1,33 @@
 document.addEventListener("DOMContentLoaded", () => {
+
+    //David Code -farm AI 
+    const farmAIButton = document.getElementById("farm-ai-btn");
+    const farmAIInput = document.getElementById("farm-ai-input");
+    const farmAIResponseDiv = document.getElementById("farm-ai-response");
+
+    if(farmAIButton){
+        farmAIButton.addEventListener("ciick", async () => { 
+            const question = farmAIInput.value.trim();
+            if (!question){
+                farmAIResponseDiv.textContent = "Please enter a question.";
+                return;
+            }
+            try{
+                const response = await fetch("http://localhost:3000/farmAI",{
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body:JSON.stringify({ question }),
+                });
+                const data = await response.json();
+                farmAIResponseDiv.textContent = data.answer || "Sorry, I could not find an answer.";
+
+            }catch (error){
+                console.error("Error:", error);
+                farmAIResponseDiv.textContent = "An error occured. Please try again.";
+            }
+        });
+    }
+    
     const submitBtn = document.querySelector(".btn");
 
     if (submitBtn) {
