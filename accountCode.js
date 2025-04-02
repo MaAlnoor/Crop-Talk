@@ -97,6 +97,50 @@ app.post('/login', async (req, res) => {
     }
 });
 
+// Add these routes to accountCode.js
+
+// Update post votes
+app.post('/posts/:id/upvote', async (req, res) => {
+    try {
+        await mongo.updateVotes(req.params.id, 'upvotes', 1);
+        res.status(200).send('Upvote successful');
+    } catch (err) {
+        console.error('Error upvoting:', err);
+        res.status(500).send(err.message);
+    }
+});
+
+app.post('/posts/:id/downvote', async (req, res) => {
+    try {
+        await mongo.updateVotes(req.params.id, 'downvotes', 1);
+        res.status(200).send('Downvote successful');
+    } catch (err) {
+        console.error('Error downvoting:', err);
+        res.status(500).send(err.message);
+    }
+});
+
+// Update reply votes
+app.post('/replies/:id/upvote', async (req, res) => {
+    try {
+        await mongo.updateReplyVotes(req.params.id, 'upvotes', 1);
+        res.status(200).send('Reply upvote successful');
+    } catch (err) {
+        console.error('Error upvoting reply:', err);
+        res.status(500).send(err.message);
+    }
+});
+
+app.post('/replies/:id/downvote', async (req, res) => {
+    try {
+        await mongo.updateReplyVotes(req.params.id, 'downvotes', 1);
+        res.status(200).send('Reply downvote successful');
+    } catch (err) {
+        console.error('Error downvoting reply:', err);
+        res.status(500).send(err.message);
+    }
+});
+
 // Ensure that server is running
 app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);
