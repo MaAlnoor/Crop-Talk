@@ -1,4 +1,4 @@
-const { MongoClient } = require("mongodb");
+const { MongoClient, ObjectId } = require("mongodb");
 const bcrypt = require('bcrypt');
 
 const uri = "mongodb+srv://Me123:Croptalk@croptalk.2iljc.mongodb.net/?retryWrites=true&w=majority&appName=CropTalk";
@@ -135,6 +135,52 @@ async function getReplies() {
     }
 }
 
+async function updateVotes(id, field, value) {
+    if (!collection) {
+        throw new Error("Database collection is not ready.");
+    }
+
+    try {
+        const objectId = new ObjectId(id);
+        
+        const result = await collection.updateOne(
+            { _id: objectId },
+            { $inc: { [field]: value } }
+        );
+        
+        if (result.modifiedCount === 0) {
+            throw new Error("Document not found or not modified");
+        }
+        
+        return result;
+    } catch (err) {
+        console.error("Error updating votes:", err);
+        throw err;
+    }
+}
+
+async function updateReplyVotes(id, field, value) {
+    if (!collection) {
+        throw new Error("Database collection is not ready.");
+    }
+
+    try {
+        const objectId = new ObjectId(id);
+        const result = await collection.updateOne(
+            { _id: objectId, type: 'reply' }, // Only update reply documents
+            { $inc: { [field]: value } }
+        );
+        
+        if (result.modifiedCount === 0) {
+            throw new Error("Reply not found or not modified");
+        }
+        
+        return result;
+    } catch (err) {
+        console.error("Error updating reply votes:", err);
+        throw err;
+    }
+}
 
 
 module.exports = {
@@ -145,6 +191,8 @@ module.exports = {
     insertReply,
     getPosts,
     getReplies,
+    updateVotes,
+    updateReplyVotes,
     collection
 };
 
