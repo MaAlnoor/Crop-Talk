@@ -150,6 +150,7 @@ document.addEventListener("DOMContentLoaded", () => {
             postReplies.forEach(reply => {
                 const replyDiv = document.createElement("div");
                 replyDiv.classList.add("reply");
+                replyDiv.dataset.postId = reply._id; 
     
                 // Reply content
                 const replyContent = document.createElement("p");
@@ -309,44 +310,78 @@ document.addEventListener("DOMContentLoaded", () => {
         
 
         if (event.target.classList.contains("upvote-btn") || event.target.classList.contains("downvote-btn")) {
-            const parentPost = event.target.closest(".post, .reply");
-            const postId = parentPost.dataset.postId;
+            const parentItem = event.target.closest(".post, .reply");
+            const itemId = parentItem.dataset.postId; // This should be the MongoDB _id
             const isUpvote = event.target.classList.contains("upvote-btn");
-
-            if (userVotes.has(postId)) {
-                const previousVote = userVotes.get(postId);
+            const isReply = parentItem.classList.contains("reply"); // Check if it's a reply
+        
+            if (userVotes.has(itemId)) {
+                const previousVote = userVotes.get(itemId);
                 if (previousVote === "up" && isUpvote) {
-                    adjustVote(event.target, -1);
-                    userVotes.delete(postId);
+                    // Undo upvote
+                    const success = await updateVoteInDatabase(itemId, false, isReply);
+                    if (success) {
+                        adjustVote(event.target, -1);
+                        userVotes.delete(itemId);
+                    }
                 } else if (previousVote === "down" && !isUpvote) {
-                    adjustVote(event.target, 1);
-                    userVotes.delete(postId);
+                    // Undo downvote
+                    const success = await updateVoteInDatabase(itemId, true, isReply);
+                    if (success) {
+                        adjustVote(event.target, 1);
+                        userVotes.delete(itemId);
+                    }
                 } else {
-                    adjustVote(event.target, isUpvote ? 1 : -1);
-                    adjustVote(parentPost.querySelector(previousVote === "up" ? ".upvote-btn" : ".downvote-btn"), previousVote === "up" ? -1 : 1);
-                    userVotes.set(postId, isUpvote ? "up" : "down");
+                    // Change vote type
+                    const success = await updateVoteInDatabase(itemId, isUpvote, isReply);
+                    if (success) {
+                        adjustVote(event.target, isUpvote ? 1 : -1);
+                        const oppositeButton = parentItem.querySelector(
+                            previousVote === "up" ? ".downvote-btn" : ".upvote-btn"
+                        );
+                        adjustVote(oppositeButton, previousVote === "up" ? 1 : -1);
+                        userVotes.set(itemId, isUpvote ? "up" : "down");
+                    }
                 }
             } else {
-                adjustVote(event.target, isUpvote ? 1 : -1);
-                userVotes.set(postId, isUpvote ? "up" : "down");
+                // New vote
+                const success = await updateVoteInDatabase(itemId, isUpvote, isReply);
+                if (success) {
+                    adjustVote(event.target, isUpvote ? 1 : -1);
+                    userVotes.set(itemId, isUpvote ? "up" : "down");
+                }
             }
         }
     });
 
     function createVoteButton(symbol, className, initialVotes = 0) {
         const button = document.createElement("button");
-        button.textContent = `${symbol} ${initialVotes}`; // Display initial vote count
+        button.textContent = `${symbol} ${initialVotes}`;
         button.classList.add(className);
-        button.dataset.votes = initialVotes; // Store the vote count in a data attribute
+        button.dataset.votes = initialVotes;
         return button;
     }
 
-    function adjustVote(button, value) {
-        let votes = parseInt(button.dataset.votes);
-        votes += value;
-        button.dataset.votes = votes;
-        button.textContent = button.textContent.split(" ")[0] + ` ${votes}`;
+    async function updateVoteInDatabase(itemId, isUpvote, isReply) {
+        const endpoint = isReply 
+            ? `/replies/${itemId}/${isUpvote ? 'upvote' : 'downvote'}`
+            : `/posts/${itemId}/${isUpvote ? 'upvote' : 'downvote'}`;
+    
+        try {
+            const response = await fetch(`http://localhost:3000${endpoint}`, {
+                method: 'POST'
+            });
+    
+            if (!response.ok) {
+                throw new Error('Failed to update vote');
+            }
+            return true;
+        } catch (error) {
+            console.error('Error updating vote:', error);
+            return false;
+        }
     }
+    
 
     function generateUniqueId() {
         return "post-" + Math.random().toString(36).substr(2, 9);
