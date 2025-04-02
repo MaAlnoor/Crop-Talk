@@ -181,7 +181,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const popularBtn = document.getElementById('popular-btn');
     const recentBtn = document.getElementById('recent-btn');
-    const trendingBtn = document.getElementById('trending-btn');
+    const defaultBtn = document.getElementById('default-btn');
     
     if (popularBtn) {
         popularBtn.addEventListener('click', () => sortPosts('popular'));
@@ -191,8 +191,8 @@ document.addEventListener("DOMContentLoaded", () => {
         recentBtn.addEventListener('click', () => sortPosts('recent'));
     }
     
-    if (trendingBtn) {
-        trendingBtn.addEventListener('click', () => sortPosts('trending'));
+    if (defaultBtn) {
+        defaultBtn.addEventListener('click', () => sortPosts('default'));
     }
 
     if (postButton) {
