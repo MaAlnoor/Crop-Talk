@@ -1,4 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
+    
+    let currentPosts = [];
+    let currentReplies = [];
 
     //David Code -farm AI 
     const farmAIButton = document.getElementById("farm-ai-btn");
@@ -41,32 +44,52 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // Store user votes
     const userVotes = new Map();
-
-
         
     async function fetchAndDisplayPosts() {
         try {
-            // Fetch posts
             const postsResponse = await fetch('http://localhost:3000/posts');
             if (!postsResponse.ok) {
                 console.error('Failed to fetch posts:', postsResponse.statusText);
                 return;
             }
-            const posts = await postsResponse.json();
-    
-            // Fetch replies
+            currentPosts = await postsResponse.json();
+            
             const repliesResponse = await fetch('http://localhost:3000/replies');
             if (!repliesResponse.ok) {
                 console.error('Failed to fetch replies:', repliesResponse.statusText);
                 return;
             }
-            const replies = await repliesResponse.json();
-    
-            // Display posts and replies
-            displayPosts(posts, replies);
+            currentReplies = await repliesResponse.json();
+            
+            // Default sort (most recent first)
+            sortPosts('recent');
         } catch (error) {
             console.error('Error fetching posts or replies:', error);
         }
+    }
+
+    function sortPosts(sortType) {
+        let sortedPosts = [...currentPosts]; // Create a copy of the array
+        
+        switch(sortType) {
+            case 'popular':
+                // Sort by net votes (upvotes - downvotes)
+                sortedPosts.sort((a, b) => {
+                    const netA = (a.upvotes || 0) - (a.downvotes || 0);
+                    const netB = (b.upvotes || 0) - (b.downvotes || 0);
+                    return netB - netA; // Highest net votes first
+                });
+                break;
+            case 'recent':
+                // Simply reverse the array to show newest first
+                sortedPosts.reverse();
+                break;
+            default:
+                // Default behavior (could also reverse here if you want)
+                break;
+        }
+        
+        displayPosts(sortedPosts, currentReplies);
     }
 
     // Function to display posts
@@ -156,6 +179,21 @@ document.addEventListener("DOMContentLoaded", () => {
     // Fetch and display posts when the page loads
     fetchAndDisplayPosts();
 
+    const popularBtn = document.getElementById('popular-btn');
+    const recentBtn = document.getElementById('recent-btn');
+    const trendingBtn = document.getElementById('trending-btn');
+    
+    if (popularBtn) {
+        popularBtn.addEventListener('click', () => sortPosts('popular'));
+    }
+    
+    if (recentBtn) {
+        recentBtn.addEventListener('click', () => sortPosts('recent'));
+    }
+    
+    if (trendingBtn) {
+        trendingBtn.addEventListener('click', () => sortPosts('trending'));
+    }
 
     if (postButton) {
         postButton.addEventListener("click", async function(e) {
