@@ -321,6 +321,11 @@ body {
     background-color: #b0b0b0; /* Darker on hover */
 }
 
+.user-display {
+    margin: 0 15px;
+    padding: 5px 10px;
+    font-weight: bold;
+}
 
 
 
