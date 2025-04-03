@@ -200,7 +200,7 @@ document.addEventListener("DOMContentLoaded", () => {
         postButton.addEventListener("click", async function(e) {
             e.preventDefault(); // Prevents unintended form submission if inside a form
             const content = postContent.value.trim();
-            let currentUser = localStorage.getItem("currentUser") || "Guest";
+            let currentUser = localStorage.getItem("currentUser");
 
             if (content === "") {
                 alert("Post cannot be empty!");
@@ -265,7 +265,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (event.target.classList.contains("submit-reply-btn")) {
             const parentPost = event.target.closest(".post, .reply");
             const replyInput = parentPost.querySelector(".reply-input");
-            let currentUser = localStorage.getItem("currentUser") || "Guest";
+            let currentUser = localStorage.getItem("currentUser");
     
             if (replyInput && replyInput.value.trim() !== "") {
                 // Get the question from the post being replied to
