@@ -1,4 +1,13 @@
 document.addEventListener("DOMContentLoaded", () => {
+    const userDisplay = document.getElementById('user-display');
+    const currentUser = localStorage.getItem("currentUser");
+    
+    if (currentUser && userDisplay) {
+        userDisplay.textContent = `${currentUser}`;
+        userDisplay.classList.add('logged-in');
+    } else if (userDisplay) {
+        userDisplay.textContent = 'Not logged in';
+    }
     
     let currentPosts = [];
     let currentReplies = [];
@@ -441,6 +450,14 @@ document.addEventListener("DOMContentLoaded", function() {
                     alert("Login successful!");
                     currentUser = loguser.value;
                     localStorage.setItem("currentUser", currentUser);
+                    
+                    // Update the user display immediately
+                    const userDisplay = document.getElementById('user-display');
+                    if (userDisplay) {
+                        userDisplay.textContent = `Welcome, ${currentUser}`;
+                        userDisplay.classList.add('logged-in');
+                    }
+                    
                     window.location.href = "index.html";
                 } else {
                     const errorText = await response.text();
@@ -492,6 +509,12 @@ document.addEventListener("DOMContentLoaded", function() {
                     alert("Signup successful!");
                     currentUser = username.value;
                     localStorage.setItem("currentUser", currentUser);
+
+                    const userDisplay = document.getElementById('user-display');
+                    if (userDisplay) {
+                        userDisplay.textContent = `Welcome, ${currentUser}`;
+                        userDisplay.classList.add('logged-in');
+                    }
                     window.location.href = "index.html";
                 } else {
                     const errorText = await response.text();
