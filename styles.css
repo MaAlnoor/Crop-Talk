@@ -84,7 +84,7 @@ body {
     height: 100vh;
     position: absolute;
     left: 0;
-    top: 60px;
+    top: 100px;
     display: flex;
     flex-direction: column;
     padding: 10px;
