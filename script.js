@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
             try{
-                const response = await fetch("http://localhost:3001/farmAI",{
+                const response = await fetch("http://localhost:3000/farmAI",{
                     method: "POST",
                     headers: {"Content-Type": "application/json"},
                     body:JSON.stringify({ question }),
